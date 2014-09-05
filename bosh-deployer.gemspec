@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.summary       = <<-EOS
             bosh-deployer can:
               - downloads and upload stemcells specifies on a manifest
-              TODO:
+              pending:
               - deploy Bosh
               - deploy CF
   EOS

@@ -8,6 +8,8 @@ module Bosh
 end
 
 require "bosh-deployer/version"
+require "bosh-deployer/stemcell"
+
 # require "bosh-bootstrap/network"
 # require "bosh-bootstrap/key_pair"
 # require "bosh-bootstrap/microbosh"
