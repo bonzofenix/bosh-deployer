@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+$:.push File.dirname(__FILE__) + '/../lib'
+
+require "rubygems"
+
+require "bosh-deployer"
+require "bosh-deployer/thor_cli"
+
+Bosh::Deployer::ThorCli.start

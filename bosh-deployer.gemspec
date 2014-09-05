@@ -8,10 +8,13 @@ Gem::Specification.new do |gem|
   gem.version       = Bosh::Deployer::VERSION
   gem.authors       = ["Alan Moran"]
   gem.email         = ["bonzofenix@gmail.com"]
-  gem.description   = %q{ Provision stemcells required in a manifest }
+  gem.description   = %q{ CLI plugin for bosh to perform different deploying tasks}
   gem.summary       = <<-EOS
-             bosh-deployer downloads and deploys all the stemcells specified
-             in the bosh targeted deployment.
+            bosh-deployer can:
+              - downloads and upload stemcells specifies on a manifest
+              TODO:
+              - deploy Bosh
+              - deploy CF
   EOS
   gem.homepage      = "https://github.com/bonzofenix/bosh-deployer"
 
@@ -25,4 +28,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency "thor", "~> 0.18"
   gem.add_dependency "redcard"
   gem.add_development_dependency "rake"
+  gem.add_development_dependency "rspec"
 end

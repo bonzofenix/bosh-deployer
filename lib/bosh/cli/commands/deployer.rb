@@ -1,5 +1,3 @@
-# Copyright (c) 2012-2013 Stark & Wayne, LLC
-
 require "bosh-deployer"
 
 module Bosh::Cli::Command

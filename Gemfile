@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'redcard'
+gemspec
 
-group :test do
-  gem 'rspec'
+group :development do
+  gem 'byebug'
 end
