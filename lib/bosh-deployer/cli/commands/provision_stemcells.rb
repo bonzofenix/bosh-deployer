@@ -7,7 +7,9 @@ class Bosh::Deployer::Cli::Commands::ProvisionStemcells
 
   def perform(manifest_path =default_manifest_path )
     @manifest_path = manifest_path
+    puts "Downloading #{stemcell.tar_filename} from bosh-jenkins-atifacts ..."
     stemcell.download
+    puts 'uploading stemcell ...'
     stemcell.upload
   end
 
