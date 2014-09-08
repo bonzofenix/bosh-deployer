@@ -19,11 +19,15 @@ class Bosh::Deployer::Cli::Commands::ProvisionStemcells
   end
 
   def stemcell_name
-    manifest['meta']['stemcell']['name']
+    stemcell_conf['name']
   end
 
   def stemcell_version
-    manifest['meta']['stemcell']['version']
+    stemcell_conf['version']
+  end
+
+  def stemcell_conf
+    manifest['resource_pools'][0]['stemcell']
   end
 
   def manifest
@@ -33,5 +37,4 @@ class Bosh::Deployer::Cli::Commands::ProvisionStemcells
   def default_manifest_path
     `bosh deployment`.scan(/.*`(.*)'/).first.first
   end
-
 end
