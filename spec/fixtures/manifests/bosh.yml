@@ -1,0 +1,158 @@
+# Change the following below:
+# CHANGE: Director UUID
+# CHANGE: Elastic IP 1
+# CHANGE: microBOSH IP address
+# CHANGE: OpenStack Auth URL
+# CHANGE: OpenStack Username
+# CHANGE: OpenStack Password
+# CHANGE: OpenStack Tenant
+# CHANGE: OpenStack Region (optional)
+---
+name: bosh
+director_uuid:
+
+release:
+  name: bosh
+  version: latest
+
+compilation:
+  workers: 5
+  network: dynamic
+  reuse_compilation_vms: true
+  cloud_properties:
+    instance_type: m1.large
+
+update:
+  canaries: 1
+  canary_watch_time: 3000-120000
+  update_watch_time: 3000-120000
+  max_in_flight: 4
+
+networks:
+  - name: dynamic
+    type: dynamic
+    cloud_properties:
+      net_id:
+      security_groups:
+        - bosh
+        - ssh
+  - name: default
+    type: manual
+    subnets:
+      - name: seattle
+        range: 10.230.12.0/23
+        gateway: 10.230.12.1
+        static:
+        - 10.230.12.11 - 10.230.12.12
+        cloud_properties:
+          net_id: 2a88d3d9-bda5-47ef-ab04-2a3465fae898
+          security_groups:
+            - bosh
+            - ssh
+
+resource_pools:
+  - name: large
+    network: default
+    size: 1
+    stemcell:
+      name: bosh-openstack-kvm-ubuntu-trusty-go_agent
+      version: latest
+    cloud_properties:
+      instance_type: m1.large
+
+jobs:
+  - name: core
+    template:
+    - powerdns
+    - nats
+    - postgres
+    - redis
+    - director
+    - blobstore
+    - registry
+    - health_monitor
+    instances: 1
+    resource_pool: large
+    persistent_disk: 60000
+    networks:
+      - name: default
+        default: [dns, gateway]
+        static_ips: []
+
+properties:
+  env:
+
+  postgres: &bosh_db
+    user: postgres
+    password: postges
+    host: localhost
+    listen_address: 0.0.0.0
+    database: bosh
+
+  dns:
+    address: localhost # CHANGE: Elastic IP 1
+    db: *bosh_db
+    user: powerdns
+    password: powerdns
+    database:
+      name: powerdns
+    webserver:
+      password: powerdns
+    replication:
+      basic_auth: replication:zxKDUBeCfKYXk
+      user: replication
+      password: powerdns
+    recursor: 10.230.12.50 # CHANGE: microBOSH IP address
+
+  nats:
+    address: localhost
+    user: nats
+    password: nats
+
+  redis:
+    address: localhost
+    password: redis
+
+  director:
+    name: bosh
+    address: localhost
+    db: *bosh_db
+
+  blobstore:
+    address: localhost
+    agent:
+      user: agent
+      password: agent
+    director:
+      user: director
+      password: director
+
+  registry:
+    address: localhost
+    db: *bosh_db
+    http:
+      port: 25777
+      user: registry
+      password: registry
+
+  hm:
+    http:
+      user: hm
+      password: hm
+    director_account:
+      user: admin
+      password: admin
+    event_nats_enabled: false
+    email_notifications: false
+    tsdb_enabled: false
+    pagerduty_enabled: false
+    varz_enabled: true
+
+  openstack:
+    auth_url: https://openstack.example.com:5001/v2.0
+    username: bosh
+    api_key: bosh
+    tenant: production
+    default_security_groups: ["bosh"]
+    default_key_name: microbosh
+    private_key: microbosh.pem
