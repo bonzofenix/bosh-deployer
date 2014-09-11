@@ -5,18 +5,14 @@ PATH
       redcard
       thor (~> 0.18)
 
-PATH
-  remote: ../cancun
-  specs:
-    cancun (0.1.0)
-      sourcify
-
 GEM
   remote: https://rubygems.org/
   specs:
     byebug (3.2.0)
       columnize (~> 0.8)
       debugger-linecache (~> 1.2)
+    cancun (0.0.6)
+      sourcify
     columnize (0.8.9)
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
@@ -56,6 +52,6 @@ PLATFORMS
 DEPENDENCIES
   bosh-deployer!
   byebug
-  cancun!
+  cancun
   rake
   rspec
