@@ -28,5 +28,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "thor", "~> 0.18"
   gem.add_dependency "redcard"
   gem.add_development_dependency "rake"
+  gem.add_development_dependency "cancun"
   gem.add_development_dependency "rspec"
 end
