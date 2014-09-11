@@ -1,22 +1,24 @@
+require 'cancun/test'
+require 'byebug'
 require "bosh-deployer/bosh_stub"
 
 describe Bosh::Deployer::BoshStub do
-  include Cancun::Highline
+  include Cancun::Test
 
   let(:path){ 'tmp/'}
-  let(:bosh_stub){ BoshStub.new(path) }
+  let(:bosh_stub){ described_class.new(path) }
 
-  before { init_highline_test }
-  
+  before { init_cancun_test }
+
   describe '#generate' do
     it 'asks for the intial available static ip' do
-      execute { bosh_stub.generate }
+      execute{ bosh_stub.generate }.run
       expect(output)
         .to include('Intial available static ip for deploying bosh:')
     end
 
     it 'asks for the last available static ip' do
-      execute { bosh_stub.generate }
+      execute { bosh_stub.generate }.run
       expect(output)
         .to include('Last available static ip for deploying bosh:')
     end

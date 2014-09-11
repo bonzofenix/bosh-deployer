@@ -2,4 +2,4 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'bosh_cli'
+gem 'cancun', path: '../cancun'
