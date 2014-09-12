@@ -8,5 +8,7 @@ class Bosh::Deployer::BoshStub
 
   def generate
     say_bold 'Provide the following information for your bosh configuration:'
+    ask 'Intial available static ip for deploying bosh:'
   end
+
 end
