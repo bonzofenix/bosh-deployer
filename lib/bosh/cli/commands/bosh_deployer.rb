@@ -19,12 +19,5 @@ module Bosh::Cli::Command
       require "bosh-deployer/cli/commands/provision_stemcells"
       Bosh::Deployer::Cli::Commands::ProvisionStemcells.new.perform
     end
-
-    usage "generate stubs for bosh or cf"
-    desc "Creates stub file"
-    def generate_stub(name, path=nil)
-      require "bosh-deployer/cli/commands/generate_stub"
-      Bosh::Deployer::Cli::Commands::GenerateStub.new(name,path).perform
-    end
   end
 end

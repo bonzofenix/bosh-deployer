@@ -1,44 +1,78 @@
 require 'cancun'
-require "bosh-deployer/bosh_stub"
-require "debugger"
+require 'bosh-deployer/bosh_stub'
+require 'yaml'
+
+class Hash
+  def sort_by_key(recursive = false, &block)
+    self.keys.sort(&block).reduce({}) do |seed, key|
+      seed[key] = self[key]
+      if recursive && seed[key].is_a?(Hash)
+        seed[key] = seed[key].sort_by_key(true, &block)
+      end
+      seed
+    end
+  end
+end
+
+def equal_yaml(expected_file, actual_file)
+  @expected_content = File.read(expected_file)
+  @actual_content = File.read(actual_file)
+
+  expected = YAML.load(@expected_content).sort_by_key(true).to_a
+  actual = YAML.load(@actual_content).sort_by_key(true).to_a
+
+  expect(expected).to eq(actual)
+end
 
 describe Bosh::Deployer::BoshStub do
-  include Cancun::Test
+  include ::Cancun::Test
   before{ init_cancun_test }
 
   let(:path){ 'tmp/'}
   let(:bosh_stub){ described_class.new(path) }
 
-
-  describe '#generate' do
-    describe 'when setting bosh static range' do
-      it 'asks for the intial available static ip' do
-        execute!{ bosh_stub.generate }
-        expect(output)
-          .to include('Intial available static ip for deploying bosh:')
-      end
-
-      it 'asks for the last available static ip' do
-        execute!{ bosh_stub.generate }
-        expect(output)
-          .to include('Last available static ip for deploying bosh:')
-      end
-      
-      it 'sets the range correctly' do
-      execute do
-        bosh_stub.generate
-      end.and_type '10.10.10.10', '11.11.11.11'
-      expect(bosh_stub.static_ip).to eq('')
-      end.and_type '10.10.10.10 - 11.11.11.11'
+  describe '#new' do
+    describe 'when path is given' do
+      it 'sets the filename to PATH/stubs' do
+        expect(bosh_stub.filename).to eq('tmp/bosh.yml')
       end
     end
 
+    describe 'when path is not given' do
+      let(:bosh_stub){ described_class.new }
 
-    it 'generates the manifest correctly' do
-      execute do
-        bosh_stub.generate
-      end.and_type '10.10.10.10', '11.11.11.11'
+      it 'sets the filename to ~/.bosh-deployer/stubs' do
+        expect(bosh_stub.filename).to eq('~/.bosh-deployer/stubs/bosh.yml')
+      end
     end
   end
 
+  describe '#generate' do
+    let(:settings_file) do
+      File.new('spec/fixtures/bosh-bootstrap/settings.yml')
+    end
+
+    let(:args) do
+      [ '', '', '10.10.10.10', '11.11.11.11', '','','', '', '', '', '', '' ]
+    end
+
+    before do
+      `rm -rf tmp ; mkdir tmp`
+      allow_any_instance_of(ReadWriteSettings)
+        .to receive(:open).and_call_original
+      allow_any_instance_of(ReadWriteSettings)
+        .to receive(:open).with('~/.bootstrap/settings.yml')
+        .and_return(settings_file)
+    end
+
+
+    it 'should generate the stub correctly' do
+      execute do
+        bosh_stub.generate
+      end.and_type  *args
+      puts output
+
+      equal_yaml('spec/fixtures/stubs/bosh.yml', 'tmp/bosh.yml')
+    end
+  end
 end

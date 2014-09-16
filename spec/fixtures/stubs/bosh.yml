@@ -10,8 +10,8 @@ meta:
     manual:
       static:
       - 10.10.10.10 - 11.11.11.11
-      range: 10.0.0.0/8
-      gateway: 10.0.0.1
+      range: 10.10.10.0/24
+      gateway: 10.10.10.1
 properties:
   openstack:
     auth_url: https://example.com:5000/v2.0
@@ -22,4 +22,4 @@ properties:
     - ssh
     - bosh
     default_key_name: firstbosh
-    private_key: /var/jenkins/.microbosh/ssh/firstbosh.pem
+    private_key: ~/.microbosh/ssh/firstbosh.pem

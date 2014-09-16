@@ -7,3 +7,6 @@ provider:
     openstack_tenant: dev
     openstack_auth_url: 'https://example.com:5000/v2.0/tokens'
     openstack_region: ''
+address:
+  ip: IP
+  subnet_id: SUBNET_ID

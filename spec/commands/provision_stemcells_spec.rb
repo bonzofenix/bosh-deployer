@@ -66,6 +66,7 @@ describe Bosh::Deployer::Cli::Commands::ProvisionStemcells do
       end
 
       it 'should raise error with missing arguments' do
+
       end
     end
   end
