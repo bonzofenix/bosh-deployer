@@ -56,23 +56,41 @@ describe Bosh::Deployer::BoshStub do
       [ '', '', '10.10.10.10', '11.11.11.11', '','','', '', '', '', '', '' ]
     end
 
-    before do
-      `rm -rf tmp ; mkdir tmp`
-      allow_any_instance_of(ReadWriteSettings)
-        .to receive(:open).and_call_original
-      allow_any_instance_of(ReadWriteSettings)
-        .to receive(:open).with('~/.bootstrap/settings.yml')
-        .and_return(settings_file)
+    describe 'when .bootstrap/settings.yml exist' do
+      before do
+        `rm -rf tmp ; mkdir tmp`
+        allow_any_instance_of(ReadWriteSettings)
+          .to receive(:open).and_call_original
+        allow_any_instance_of(ReadWriteSettings)
+          .to receive(:open).with('~/.bootstrap/settings.yml')
+          .and_return(settings_file)
+      end
+
+
+      it 'should generate the stub correctly' do
+        execute do
+          bosh_stub.generate
+        end.and_type  *args
+
+        equal_yaml('spec/fixtures/stubs/bosh.yml', 'tmp/bosh.yml')
+      end
     end
 
+    describe 'when .bootstrap/settings.yml does not exist' do
+      let(:args) do
+        [ 'IP', 'SUBNET_ID', '10.10.10.10', '11.11.11.11',
+          '10.10.10.0/24', '10.10.10.1','https://example.com:5000/v2.0',
+          'admin', 'admin', 'dev', '', '', '' ]
+      end
+      before { `rm -rf tmp ; mkdir tmp` }
 
-    it 'should generate the stub correctly' do
-      execute do
-        bosh_stub.generate
-      end.and_type  *args
-      puts output
+      it 'should generate the stub correctly' do
+        execute do
+          bosh_stub.generate
+        end.and_type  *args
 
-      equal_yaml('spec/fixtures/stubs/bosh.yml', 'tmp/bosh.yml')
+        equal_yaml('spec/fixtures/stubs/bosh.yml', 'tmp/bosh.yml')
+      end
     end
   end
 end

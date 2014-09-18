@@ -31,37 +31,37 @@ class Bosh::Deployer::BoshStub
 
   def openstack_auth_url
     @openstack_auth_url ||= ask('Openstack auth url:') do |q|
-      q.default =  microbosh.provider.credentials.openstack_auth_url.gsub('/tokens', '')
+      q.default =  microbosh.provider.credentials.openstack_auth_url.gsub('/tokens', '') if microbosh
     end
   end
 
   def openstack_username
     @openstack_username ||= ask('Openstack username:') do |q|
-      q.default =  microbosh.provider.credentials.openstack_username
+      q.default =  microbosh.provider.credentials.openstack_username if microbosh
     end
   end
 
   def openstack_api_key
     @openstack_api_key ||= ask('Openstack api key:') do |q|
-      q.default =  microbosh.provider.credentials.openstack_api_key
+      q.default =  microbosh.provider.credentials.openstack_api_key if microbosh
     end
   end
 
   def openstack_tenant
     @openstack_tenant ||= ask('Openstack tenant:') do |q|
-      q.default =  microbosh.provider.credentials.openstack_tenant
+      q.default =  microbosh.provider.credentials.openstack_tenant if microbosh
     end
   end
 
   def recursor_ip
     @recursor_ip ||= ask('Recursor ip or host:') do |q|
-      q.default = microbosh.address.ip
+      q.default = microbosh.address.ip if microbosh
     end
   end
 
   def subnet_id
     @subnet_id ||= ask('Subnet ID where bosh will be deployed:') do |q|
-      q.default = microbosh.address.subnet_id
+      q.default = microbosh.address.subnet_id if microbosh
     end
   end
 
@@ -94,10 +94,12 @@ class Bosh::Deployer::BoshStub
   protected
 
   def template
-    @template ||= ERB.new(File.read('stubs/bosh.yml.erb'))
+    @template ||= ERB.new( File.read(File.expand_path('../../../stubs/bosh.yml.erb', __FILE__)))
   end
 
   def microbosh
-    @microbosh ||= ReadWriteSettings.new('~/.bootstrap/settings.yml')
+    if File.exists?('~/.bootstrap/settings.yml')
+      @microbosh ||= ReadWriteSettings.new('~/.bootstrap/settings.yml')
+    end
   end
 end
