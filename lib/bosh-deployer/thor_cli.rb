@@ -10,5 +10,12 @@ module Bosh::Deployer
       deploy_cmd = Bosh::Deployer::Cli::Commands::ProvisionStemcells.new
       deploy_cmd.perform(manifest_path)
     end
+
+    desc "generate_stub <NAME>", "Generates stub for bosh or cloudfoundry"
+    def generate_stub(name)
+      cmd = Bosh::Deployer::Cli::Commands::GenerateStub.new(
+        name, 'cookbooks/ci_infrastructure_cf/files/default/stubs')
+      cmd.perform
+    end
   end
 end

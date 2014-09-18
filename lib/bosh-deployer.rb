@@ -10,7 +10,3 @@ end
 require "bosh-deployer/version"
 require "bosh-deployer/stemcell"
 require "bosh-deployer/bosh_stub"
-
-# require "bosh-bootstrap/network"
-# require "bosh-bootstrap/key_pair"
-# require "bosh-bootstrap/microbosh"

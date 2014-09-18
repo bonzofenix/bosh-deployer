@@ -2,7 +2,7 @@ require "bosh-deployer/cli/commands/provision_stemcells"
 require "bosh-deployer/stemcell"
 
 describe Bosh::Deployer::Cli::Commands::ProvisionStemcells do
-  let(:cmd) { described_class.new }
+  let(:cmd) { described_class.new(manifest_path) }
   let(:stemcell) { double.as_null_object }
 
   before do
@@ -12,7 +12,7 @@ describe Bosh::Deployer::Cli::Commands::ProvisionStemcells do
   end
 
   describe '#perform' do
-    let(:perform_provision_stemcells){ cmd.perform(manifest_path) }
+    let(:perform_provision_stemcells){ cmd.perform }
 
     describe 'when filename is provided' do
       [{
@@ -66,7 +66,6 @@ describe Bosh::Deployer::Cli::Commands::ProvisionStemcells do
       end
 
       it 'should raise error with missing arguments' do
-
       end
     end
   end

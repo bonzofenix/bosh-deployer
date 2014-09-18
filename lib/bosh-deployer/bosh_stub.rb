@@ -1,4 +1,5 @@
 require 'erb'
+require 'cancun'
 require 'cancun/highline'
 require 'readwritesettings'
 
@@ -14,10 +15,15 @@ class Bosh::Deployer::BoshStub
   end
 
   def generate
+     if File.exists?(filename) and !agree "#{filename} already exists, do you want to overwrite it?"
+       say 'Stub generation cancelled!'
+       return
+     end
     say_bold 'Provide the following information for your bosh configuration:'
     stub = template.result(binding)
     say "Saving stub at #{filename}"
     File.open(filename, 'w') { |f| f.write(stub) }
+      
   end
 
   def static_ip_from

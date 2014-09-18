@@ -59,6 +59,9 @@ describe Bosh::Deployer::BoshStub do
     describe 'when .bootstrap/settings.yml exist' do
       before do
         `rm -rf tmp ; mkdir tmp`
+        allow(File).to receive(:exists?).and_call_original
+        allow(File).to receive(:exists?)
+          .with('~/.bootstrap/settings.yml').and_return(true)
         allow_any_instance_of(ReadWriteSettings)
           .to receive(:open).and_call_original
         allow_any_instance_of(ReadWriteSettings)
@@ -90,6 +93,22 @@ describe Bosh::Deployer::BoshStub do
         end.and_type  *args
 
         equal_yaml('spec/fixtures/stubs/bosh.yml', 'tmp/bosh.yml')
+      end
+    end
+
+    describe 'when stub already exists' do
+      before do
+        `rm -rf tmp ; mkdir tmp`
+        `echo 'something' > tmp/bosh.yml` 
+      end
+
+      let(:args){ %w{ n } }
+
+      it 'should not change stub if user does not want to edit it' do
+        execute do
+          bosh_stub.generate
+        end.and_type  *args
+        expect(output).to include('Stub generation cancelled!')
       end
     end
   end

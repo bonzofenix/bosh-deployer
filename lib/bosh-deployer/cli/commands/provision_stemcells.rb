@@ -4,9 +4,11 @@ module Bosh; module Deployer; module Cli; module Commands; end; end; end; end
 
 class Bosh::Deployer::Cli::Commands::ProvisionStemcells
   attr_reader :manifest_path
-
-  def perform(manifest_path =default_manifest_path )
+  def initialize(manifest_path =default_manifest_path )
     @manifest_path = manifest_path
+  end
+
+  def perform
     puts "Downloading #{stemcell.tar_filename} from bosh-jenkins-atifacts ..."
     stemcell.download
     puts 'uploading stemcell ...'
