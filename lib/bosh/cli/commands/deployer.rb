@@ -20,8 +20,8 @@ module Bosh::Cli::Command
       Bosh::Deployer::Cli::Commands::ProvisionStemcells.new.perform
     end
 
-    usage "generate stubs for bosh or cf"
-    desc "Creates stub file"
+    usage "deployer generate stub"
+    desc "Creates stub file to be compile with Spiff."
     def generate_stub(name, path=nil)
       require "bosh-deployer/cli/commands/generate_stub"
       Bosh::Deployer::Cli::Commands::GenerateStub.new(name,path).perform
