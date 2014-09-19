@@ -79,7 +79,7 @@ class Bosh::Deployer::BoshStub
   end
 
   def range
-    @range ||= ask('Gateway IP for bosh:') do |q|
+    @range ||= ask('Range IP for bosh:') do |q|
       #UGLY REPLACE ME WITH A REGEX
       q.default = (static_ip_from.split('.')[0..-2] + ['0']).join('.') + '/24'
     end
