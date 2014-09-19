@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bosh-deployer (0.0.3)
+    bosh-deployer (0.0.4)
       cancun
       readwritesettings
       redcard

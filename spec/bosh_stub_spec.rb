@@ -74,7 +74,7 @@ describe Bosh::Deployer::BoshStub do
         execute do
           bosh_stub.generate
         end.and_type  *args
-
+        sleep 1 #TODO: develop wait for cmd after and type
         equal_yaml('spec/fixtures/stubs/bosh.yml', 'tmp/bosh.yml')
       end
     end
@@ -112,4 +112,5 @@ describe Bosh::Deployer::BoshStub do
       end
     end
   end
+
 end
