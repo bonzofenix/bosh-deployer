@@ -9,4 +9,5 @@ end
 
 require "bosh-deployer/version"
 require "bosh-deployer/stemcell"
+require "bosh-deployer/stub"
 require "bosh-deployer/bosh_stub"
