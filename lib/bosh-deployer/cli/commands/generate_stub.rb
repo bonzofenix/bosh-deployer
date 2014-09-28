@@ -15,6 +15,11 @@ class Bosh::Deployer::Cli::Commands::GenerateStub
 
   protected
   def stub
-    Bosh::Deployer::BoshStub.new(path) if name == 'bosh'
+    case name
+      when 'bosh'
+        Bosh::Deployer::BoshStub.new(path)
+      when 'cf'
+        Bosh::Deployer::CFStub.new(path)
+    end
   end
 end

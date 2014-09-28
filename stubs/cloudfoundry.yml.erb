@@ -128,7 +128,7 @@ jobs:
 networks:
   - type: vip
     cloud_properties:
-      net_id: MICROBOSH_SUBNET_ID
+      net_id: <%= subnet_id %>
     name: floating
   - subnets:
       - name: default_unused
@@ -154,7 +154,7 @@ networks:
         static:
         - 10.0.0.2 - 10.0.0.250
         cloud_properties:
-          net_id: MICROBOSH_SUBNET_ID
+          net_id: <%= subnet_id %>
           security_groups:
           - cf-public
           - cf-private
