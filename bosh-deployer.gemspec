@@ -29,6 +29,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "redcard"
   gem.add_dependency 'readwritesettings'
   gem.add_dependency "cancun"
+  gem.add_dependency "recursive-open-struct"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec"
 end

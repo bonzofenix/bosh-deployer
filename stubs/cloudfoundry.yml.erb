@@ -1,8 +1,9 @@
 meta:
   bosh-network:
-    cidr:
+    cidr: <%= range %>
   openstack: null
   floating_static_ips:
+  - <%= floating_static_ip %>
   stemcell:
     name: bosh-openstack-kvm-ubuntu-lucid-go_agent
     version: latest
@@ -125,25 +126,29 @@ jobs:
     instances: 0
 
 networks:
-  floating:
-    type: vip
+  - type: vip
     cloud_properties:
-      net_id:
-  cf1: {}
-  cf-dynamic:
-    cloud_properties:
-      net_id:
-      security_groups:
-      - cf-public
-      - cf-private
-      - ssh
-    range:
-    type: dynamic
-  cf2:
-    type: manual
+      net_id: MICROBOSH_SUBNET_ID
+    name: floating
+  - subnets:
+      - name: default_unused
+        range: 10.0.0.0/8
+        gateway: 1.1.1.1
+        reserved:
+          - 1.1.1.1 - 2.2.2.2
+        static:
+          - <%= static_ip_from %> - <%= static_ip_to %>
+        cloud_properties:
+          net_id: <%= subnet_id %>
+          security_groups:
+          - cf-public
+          - cf-private
+          - ssh
+    name: cf1
+  - type: manual
     subnets:
       - name: default_unused
-      range: <% range %>
+        range: 10.0.0.0/23
         gateway: 10.0.0.1
         reserved: []
         static:
@@ -154,6 +159,8 @@ networks:
           - cf-public
           - cf-private
           - ssh
+    name: cf2
+
 properties:
   login:
     protocol: http

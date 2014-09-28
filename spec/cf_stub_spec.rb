@@ -11,49 +11,29 @@ describe Bosh::Deployer::CFStub do
   let(:cf_stub){ described_class.new(path) }
 
   describe '#generate' do
-    let(:settings_file) do
-      File.new('spec/fixtures/bosh-bootstrap/settings.yml')
+    let(:microbosh_settings) do
+      Bosh::Deployer::MicroboshSettings.new(
+        'spec/fixtures/bosh-bootstrap/settings.yml'
+      )
     end
-
     let(:args) do
-      [ '', '', '' ]
+      ['2.2.2.2', '10.0.0.0/8', '1.2.3.4',  '3.3.3.3', 'MICROBOSH_SUBNET_ID']
     end
 
     describe 'when .bootstrap/settings.yml exist' do
       before do
         `rm -rf tmp ; mkdir tmp`
-        allow(File).to receive(:exists?).and_call_original
-        allow(File).to receive(:exists?)
-          .with('~/.bootstrap/settings.yml').and_return(true)
-        allow_any_instance_of(ReadWriteSettings)
-          .to receive(:open).and_call_original
-        allow_any_instance_of(ReadWriteSettings)
-          .to receive(:open).with('~/.bootstrap/settings.yml')
-          .and_return(settings_file)
+        allow(Bosh::Deployer::MicroboshSettings)
+          .to receive(:load).and_return(microbosh_settings)
       end
 
 
       it 'should generate the stub correctly' do
-        # execute do
-          # cf_stub.generate
-        # end.and_type  *args
-        # sleep 1 #TODO: develop wait for cmd after and type
-        # equal_yaml('spec/fixtures/stubs/cloudfoundry.yml', 'tmp/cloudfoundry.yml')
-      end
-    end
-
-    describe 'when .bootstrap/settings.yml does not exist' do
-      let(:args) do
-        [ ]
-      end
-      before { `rm -rf tmp ; mkdir tmp` }
-
-      it 'should generate the stub correctly' do
-        # execute do
-          # cf_stub.generate
-        # end.and_type  *args
-
-        # equal_yaml('spec/fixtures/stubs/cloudfoundry.yml', 'tmp/cloudfoundry.yml')
+        execute do
+          cf_stub.generate
+        end.and_type  *args
+        sleep 1 #TODO: develop wait for cmd after and type
+        equal_yaml('spec/fixtures/stubs/cloudfoundry.yml', 'tmp/cloudfoundry.yml')
       end
     end
   end

@@ -1,19 +1,22 @@
-module Bosh::Deployer::MicroboshSettings
-  def default_key_name
-    @default_key_name ||= ask('Key name:') do |q|
-      q.default = 'firstbosh'
+require 'yaml'
+require 'recursive-open-struct'
+
+class Bosh::Deployer::MicroboshSettings < RecursiveOpenStruct
+  attr_reader :filepath
+
+  def initialize(h=nil, args={})
+    if h && h.is_a?(String)
+      @filepath ||= h
+      super(YAML.load_file(filepath)) if File.exists?(filepath)
+    else
+      @filepath ||= '~/.bootstrap/settings.yml'
+      super(h, args)
     end
   end
 
-  def private_key
-    @private_key ||= ask('Private key:') do |q|
-      q.default = '~/.microbosh/ssh/firstbosh.pem'
-    end
-  end
-
-  def microbosh
-    if File.exists?('~/.bootstrap/settings.yml')
-      @microbosh ||= ReadWriteSettings.new('~/.bootstrap/settings.yml')
+  def self.load(filepath = nil)
+    new(filepath).tap do |settings|
+      return unless settings.to_a
     end
   end
 end

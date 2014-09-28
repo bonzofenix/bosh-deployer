@@ -11,8 +11,11 @@ describe Bosh::Deployer::BoshStub do
   let(:bosh_stub){ described_class.new(path) }
 
   describe '#generate' do
-    let(:settings_file) do
-      File.new('spec/fixtures/bosh-bootstrap/settings.yml')
+    let(:microbosh_settings) do
+      Bosh::Deployer::MicroboshSettings.new(
+        'spec/fixtures/bosh-bootstrap/settings.yml'
+      )
+
     end
 
     let(:args) do
@@ -22,14 +25,8 @@ describe Bosh::Deployer::BoshStub do
     describe 'when .bootstrap/settings.yml exist' do
       before do
         `rm -rf tmp ; mkdir tmp`
-        allow(File).to receive(:exists?).and_call_original
-        allow(File).to receive(:exists?)
-          .with('~/.bootstrap/settings.yml').and_return(true)
-        allow_any_instance_of(ReadWriteSettings)
-          .to receive(:open).and_call_original
-        allow_any_instance_of(ReadWriteSettings)
-          .to receive(:open).with('~/.bootstrap/settings.yml')
-          .and_return(settings_file)
+        allow(Bosh::Deployer::MicroboshSettings)
+          .to receive(:load).and_return(microbosh_settings)
       end
 
 

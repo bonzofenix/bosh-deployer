@@ -1,5 +1,4 @@
 require 'erb'
-require 'readwritesettings'
 require 'bosh-deployer/stub'
 require 'cancun'
 require 'cancun/highline'
@@ -26,14 +25,15 @@ class Bosh::Deployer::Stub
       return
     end
 
-    say_bold "Provide the following information for #{name} configuration:"
-    say "Saving stub at #{filename}"
     save_stub
   end
 
   protected
   def save_stub
-    File.open(filename, 'w') { |f| f.write(stub) }
+    stub.tap do |s|
+      say "Saving stub at #{filename}"
+      File.open(filename, 'w') { |f| f.write(s) }
+    end
   end
 
   def template
@@ -41,6 +41,7 @@ class Bosh::Deployer::Stub
   end
 
   def stub
+    say_bold "Provide the following information for #{name} configuration:"
     template.result(binding)
   end
 end
