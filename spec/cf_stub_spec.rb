@@ -17,7 +17,7 @@ describe Bosh::Deployer::CFStub do
       )
     end
     let(:args) do
-      ['2.2.2.2', '10.0.0.0/8', '1.2.3.4',  '3.3.3.3', 'MICROBOSH_SUBNET_ID']
+      ['2.2.2.2', '10.0.0.0/8', '1.2.3.4', 'MICROBOSH_SUBNET_ID', '3.3.3.3']
     end
 
     describe 'when .bootstrap/settings.yml exist' do
@@ -26,7 +26,6 @@ describe Bosh::Deployer::CFStub do
         allow(Bosh::Deployer::MicroboshSettings)
           .to receive(:load).and_return(microbosh_settings)
       end
-
 
       it 'should generate the stub correctly' do
         execute do

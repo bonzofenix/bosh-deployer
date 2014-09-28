@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bosh-deployer (0.0.6)
+    bosh-deployer (0.0.7)
       cancun
       readwritesettings
       recursive-open-struct
