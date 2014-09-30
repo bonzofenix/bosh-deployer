@@ -4,10 +4,10 @@ RedCard.verify :mri, :ruby, :rubinius, "1.9"
 
 module Bosh
   module Deployer
+    VERSION = '0.0.8'
   end
 end
 
-require "bosh-deployer/version"
 require "bosh-deployer/stemcell"
 require "bosh-deployer/stub"
 require "bosh-deployer/bosh_stub"
