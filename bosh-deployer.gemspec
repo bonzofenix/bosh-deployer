@@ -26,7 +26,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency "thor", "~> 0.18"
-  gem.add_dependency "redcard"
   gem.add_dependency 'readwritesettings'
   gem.add_dependency "cancun"
   gem.add_dependency "recursive-open-struct"
