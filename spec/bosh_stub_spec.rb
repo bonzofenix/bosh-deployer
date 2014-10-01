@@ -15,7 +15,6 @@ describe Bosh::Deployer::BoshStub do
       Bosh::Deployer::MicroboshSettings.new(
         'spec/fixtures/bosh-bootstrap/settings.yml'
       )
-
     end
 
     let(:args) do

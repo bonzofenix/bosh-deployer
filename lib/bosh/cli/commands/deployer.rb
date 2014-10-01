@@ -26,5 +26,12 @@ module Bosh::Cli::Command
       require "bosh-deployer/cli/commands/generate_stub"
       Bosh::Deployer::Cli::Commands::GenerateStub.new(name,path).perform
     end
+
+    usage "deployer target"
+    desc "Targets bosh or microbosh from a deployment.yml, stub.yml or bosh-bootstrap microbosh settings.yml"
+    def target_deployment(name, filepath=nil)
+      require "bosh-deployer/cli/commands/deployment"
+      Bosh::Deployer::Cli::Commands::Deployment.new(name, filepath).target
+    end
   end
 end
