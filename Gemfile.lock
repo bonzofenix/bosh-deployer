@@ -1,11 +1,10 @@
 PATH
   remote: .
   specs:
-    bosh-deployer (0.1.0)
+    bosh-deployer (0.1.1)
       cancun
       readwritesettings
       recursive-open-struct
-      redcard
       thor (~> 0.18)
 
 GEM
@@ -96,7 +95,6 @@ GEM
     rake (10.3.2)
     readwritesettings (3.0.1)
     recursive-open-struct (0.5.0)
-    redcard (1.1.0)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)

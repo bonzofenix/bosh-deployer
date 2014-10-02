@@ -10,7 +10,7 @@ class Bosh::Deployer::Cli::Commands::Deployment
   end
 
   def target
-    `bosh target #{address}`
+    puts `bosh target #{address}`
   end
 
   def address
@@ -30,9 +30,9 @@ class Bosh::Deployer::Cli::Commands::Deployment
     return @filepath if @filepath
     @filepath = case name
                 when 'microbosh'
-                  '~/.microbosh/settings.yml'
+                  "#{ENV['HOME']}/.microbosh/settings.yml"
                 when 'bosh'
-                  '~/.deployer/stubs/bosh.yml'
+                  "#{ENV['HOME']}/.deployer/stubs/bosh.yml"
                 end
   end
 end
