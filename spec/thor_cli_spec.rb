@@ -1,6 +1,7 @@
 require 'bosh-deployer'
 require 'bosh-deployer/thor_cli'
 require 'bosh-deployer/cli/commands/generate_stub'
+require 'bosh-deployer/cli/commands/deployment'
 require 'bosh-deployer/cli/commands/provision_stemcells'
 
 describe Bosh::Deployer::ThorCli do
@@ -11,7 +12,7 @@ describe Bosh::Deployer::ThorCli do
 
     it 'should called generate stub with the correct commands' do
       expect(Bosh::Deployer::Cli::Commands::GenerateStub)
-        .to receive(:new).with('bosh',anything).and_return(cmd)
+        .to receive(:new).with('bosh').and_return(cmd)
         cli.generate_stub('bosh')
     end
   end
@@ -24,6 +25,17 @@ describe Bosh::Deployer::ThorCli do
         .to receive(:new).and_return(cmd)
       expect(cmd).to receive(:perform)
       cli.provision_stemcells
+    end
+  end
+
+  describe '' do
+    let(:cmd){ double.as_null_object }
+
+    it 'targets microbosh or bosh deployment' do
+      allow(Bosh::Deployer::Cli::Commands::Deployment)
+        .to receive(:new).and_return(cmd)
+      expect(cmd).to receive(:target)
+      cli.target_deployment('bosh')
     end
   end
 end

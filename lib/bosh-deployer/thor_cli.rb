@@ -13,9 +13,15 @@ module Bosh::Deployer
 
     desc "generate_stub <NAME>", "Generates stub for bosh or cloudfoundry"
     def generate_stub(name)
-      cmd = Bosh::Deployer::Cli::Commands::GenerateStub.new(
-        name, 'cookbooks/ci_infrastructure_cf/files/default/stubs')
+      cmd = Bosh::Deployer::Cli::Commands::GenerateStub.new(name)
       cmd.perform
+    end
+
+    desc "target_deployment <MICROBOSH_OR_BOSH>", 
+      "Tries to target an existent microbosh or bosh deployment done via bosh deployer"
+    def target_deployment(name)
+      cmd = Bosh::Deployer::Cli::Commands::Deployment.new(name)
+      cmd.target(name)
     end
   end
 end
